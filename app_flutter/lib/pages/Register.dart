@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '/pages/Login.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -136,7 +137,14 @@ class _RegisterState extends State<Register> {
 
                 // Botão de Cadastrar
                 ElevatedButton(
-                  onPressed: _registerUser,
+                  onPressed: (){
+                    _registerUser;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => LoginScreen()
+                      ),
+                    );},
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.tealAccent,
                     minimumSize: const Size(double.infinity, 50),
