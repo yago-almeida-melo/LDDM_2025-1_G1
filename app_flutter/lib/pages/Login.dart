@@ -25,8 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Logo ou título
-              FlutterLogo(
-                size: 100,
+              Image.asset(
+                'images/logo-leia-a-bula.png', width: 300, height: 200
               ),
 
               const SizedBox(height: 30),
