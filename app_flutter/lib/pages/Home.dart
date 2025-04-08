@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
 import 'package:curved_nav_bar/curved_bar/curved_action_bar.dart';
 import 'package:curved_nav_bar/fab_bar/fab_bottom_app_bar_item.dart';
 import 'package:curved_nav_bar/flutter_curved_bottom_nav_bar.dart';
+import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -76,80 +76,37 @@ class _HomeScreenState extends State<Home> {
         // Home screen content
         Scaffold(
           appBar: AppBar(
-            title: const Text(
-                'Visia',
-                style: TextStyle(
-                    color: Colors.white
-                )
-            ),
-            centerTitle: true,
             backgroundColor: Colors.teal,
-
-          ),
-          body: Container(
-            width: double.infinity,
-            height: double.infinity,
-            color: Colors.tealAccent[100],
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 50),
-                    const CircleAvatar(
-                      radius: 80,
-                      backgroundColor: Colors.teal,
-                      child: Icon(
-                        Icons.home,
-                        size: 100,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    const Text(
-                      'Bem-vindo à Página Inicial',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.teal,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Text(
-                      'Explore as funcionalidades do nosso aplicativo',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    ElevatedButton(
-                      onPressed: () {
-                        // Adicione a navegação para outra página
-                        // Navigator.push(context, MaterialPageRoute(builder: (context) => OutraPagina()));
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.teal,
-                        minimumSize: const Size(200, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      child: const Text(
-                        'Começar',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+            elevation: 0,
+            leading: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                Icons.flutter_dash, // Ícone de logo
+                color: Colors.white,
+                size: 30,
               ),
             ),
+            title: const Text(
+              'Visia',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            centerTitle: true,
+            actions: [
+              IconButton(
+                icon: const Icon(
+                  Icons.account_circle, // Ícone de perfil
+                  color: Colors.white,
+                  size: 30,
+                ),
+                onPressed: () {
+                  // Lógica para abrir perfil ou configurações do usuário
+                  print('Perfil do usuário');
+                },
+              ),
+            ],
           ),
         ),
         // Wallet screen content
