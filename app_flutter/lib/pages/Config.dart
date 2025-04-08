@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:app_flutter/pages/Home.dart';
 
 class ConfigScreen extends StatefulWidget {
-  const ConfigScreen({super.Key});
+  const ConfigScreen({super.key});
 
   @override
   _ConfigScreenState createState() => _ConfigScreenState();
