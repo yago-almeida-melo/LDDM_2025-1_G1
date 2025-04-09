@@ -40,7 +40,7 @@ class _ConfigScreenState extends State<ConfigScreen>{
               child: Icon(
                 Icons.settings,
                 size: 80,
-                color: Colors.blue,
+                color: Colors.teal,
               ),
             ),
             const SizedBox(height: 20),
