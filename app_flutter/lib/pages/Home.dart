@@ -12,13 +12,14 @@ class Home extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<Home> {
+  bool _showAboutScreen = false;
 
   @override
   Widget build(BuildContext context) {
     return CurvedNavBar(
       actionButton: CurvedActionBar(
         onTab: (value) {
-         print(value);
+          print(value);
         },
         activeIcon: Container(
           padding: EdgeInsets.all(8),
@@ -63,10 +64,17 @@ class _HomeScreenState extends State<Home> {
             elevation: 0,
             leading: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Icon(
-                Icons.flutter_dash, // Ícone de logo
-                color: Colors.white,
-                size: 30,
+              child: InkWell(
+                onTap: () {
+                  setState(() {
+                    _showAboutScreen = true;
+                  });
+                },
+                child: Icon(
+                  Icons.info, // Ícone de logo como botão
+                  color: Colors.white,
+                  size: 30,
+                ),
               ),
             ),
             title: const Text(
@@ -90,6 +98,18 @@ class _HomeScreenState extends State<Home> {
               ),
             ],
           ),
+          body: _showAboutScreen
+              ? AboutScreen(onBack: () {
+            setState(() {
+              _showAboutScreen = false;
+            });
+          })
+              : Center(
+            child: Text(
+              'Conteúdo principal do app',
+              style: TextStyle(fontSize: 24),
+            ),
+          ),
         ),
         // Config screen content
         ConfigScreen()
@@ -97,6 +117,195 @@ class _HomeScreenState extends State<Home> {
       actionBarView: Container(
         height: MediaQuery.of(context).size.height,
         color: Colors.orange,
+      ),
+    );
+  }
+}
+
+class AboutScreen extends StatelessWidget {
+  final VoidCallback onBack;
+
+  const AboutScreen({required this.onBack, Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              children: [
+                IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  onPressed: onBack,
+                ),
+                SizedBox(width: 20),
+                Text(
+                  'Sobre o Aplicativo',
+                  style: TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Center(
+                    child: Icon(
+                      Icons.visibility,
+                      size: 80,
+                      color: Colors.teal,
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Center(
+                    child: Text(
+                      'Visia',
+                      style: TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.teal,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  Text(
+                    'Descrição',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Nosso aplicativo móvel foi desenvolvido para auxiliar pessoas com deficiência visual, dislexia e analfabetismo, proporcionando uma experiência de leitura inovadora e acessível. Utilizamos tecnologia avançada de reconhecimento óptico de caracteres (OCR) para captar texto a partir de imagens e convertê-lo em áudio por meio de síntese de fala (TTS). Isso permite que os usuários acessem livros, documentos e outros materiais impressos de forma intuitiva e eficiente, eliminando a barreira da leitura tradicional. Com alta precisão na identificação de textos presentes em fotos de documentos, embalagens, livros e panfletos, nosso app transforma a informação em voz, ampliando a autonomia e a inclusão para pessoas de todas as idades e demografias.',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Principais Funcionalidades',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: 15),
+                  FeatureItem(
+                    icon: Icons.text_fields,
+                    title: 'Identificar Letra',
+                    description: 'Reconhecimento preciso de texto em materiais impressos.',
+                  ),
+                  FeatureItem(
+                    icon: Icons.record_voice_over,
+                    title: 'Ler em Voz Alta',
+                    description: 'Conversão de texto para áudio com vozes naturais.',
+                  ),
+                  FeatureItem(
+                    icon: Icons.format_size,
+                    title: 'Aumentar Tamanho da Letra',
+                    description: 'Ajuste do tamanho do texto para melhor visualização.',
+                  ),
+                  FeatureItem(
+                    icon: Icons.speed,
+                    title: 'Ajustar Velocidade da Narração',
+                    description: 'Controle da velocidade de leitura do texto.',
+                  ),
+                  FeatureItem(
+                    icon: Icons.mic,
+                    title: 'Navegação por Comando de Voz',
+                    description: 'Interface acessível controlada por comandos de voz.',
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                    'Versão 1.0.0',
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: Colors.grey,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(height: 10),
+                  Center(
+                    child: Text(
+                      '© 2025 Visia Team. Todos os direitos reservados.',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class FeatureItem extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String description;
+
+  const FeatureItem({
+    required this.icon,
+    required this.title,
+    required this.description,
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+              color: Colors.teal.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Icon(
+              icon,
+              color: Colors.teal,
+            ),
+          ),
+          SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                SizedBox(height: 4),
+                Text(
+                  description,
+                  style: TextStyle(
+                    color: Colors.black87,
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
