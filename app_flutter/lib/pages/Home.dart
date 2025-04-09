@@ -2,6 +2,7 @@ import 'package:curved_nav_bar/curved_bar/curved_action_bar.dart';
 import 'package:curved_nav_bar/fab_bar/fab_bottom_app_bar_item.dart';
 import 'package:curved_nav_bar/flutter_curved_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:app_flutter/pages/Details.dart';
 import 'package:app_flutter/pages/Config.dart';
 import 'package:app_flutter/pages/UserAccount.dart';
 
@@ -23,18 +24,18 @@ class _HomeScreenState extends State<Home> {
           print(value);
         },
         activeIcon: Container(
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-          child: Icon(
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+          child: const Icon(
             Icons.camera_alt,
             size: 50,
             color: Colors.teal,
           ),
         ),
         inActiveIcon: Container(
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(color: Colors.white70, shape: BoxShape.circle),
-          child: Icon(
+          padding: const EdgeInsets.all(8),
+          decoration: const BoxDecoration(color: Colors.white70, shape: BoxShape.circle),
+          child: const Icon(
             Icons.camera_alt_outlined,
             size: 50,
             color: Colors.teal,
@@ -47,13 +48,13 @@ class _HomeScreenState extends State<Home> {
       inActiveColor: Colors.black45,
       appBarItems: [
         FABBottomAppBarItem(
-          activeIcon: Icon(Icons.home, color: Colors.white),
-          inActiveIcon: Icon(Icons.home, color: Colors.black26),
+          activeIcon: const Icon(Icons.home, color: Colors.white),
+          inActiveIcon: const Icon(Icons.home, color: Colors.black26),
           text: 'Início',
         ),
         FABBottomAppBarItem(
-          activeIcon: Icon(Icons.settings, color: Colors.white),
-          inActiveIcon: Icon(Icons.settings, color: Colors.black26),
+          activeIcon: const Icon(Icons.settings, color: Colors.white),
+          inActiveIcon: const Icon(Icons.settings, color: Colors.black26),
           text: 'Configurações',
         ),
       ],
@@ -71,7 +72,7 @@ class _HomeScreenState extends State<Home> {
                     _showAboutScreen = true;
                   });
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.info, // Ícone de logo como botão
                   color: Colors.white,
                   size: 30,
@@ -95,8 +96,8 @@ class _HomeScreenState extends State<Home> {
                 ),
                 onPressed: () {
                   Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => UserAccountScreen())
+                      context,
+                      MaterialPageRoute(builder: (context) => const UserAccountScreen())
                   );
                 },
               ),
@@ -114,38 +115,52 @@ class _HomeScreenState extends State<Home> {
               7, // num de elementos
                   (index) => Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
-                child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 13.0),
-                  decoration: BoxDecoration(
-                    color: Colors.teal[200],
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 120,
-                        height: 120,
-                        margin: const EdgeInsets.all(13.0),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        child: Icon(
-                          Icons.image,
-                          color: Colors.grey[400],
-                          size: 60,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DetailsScreen(
+                          indiceRemedio: index,
+                          nomeRemedio: 'Remédio ${index + 1}',
                         ),
                       ),
-                      SizedBox(width: 5), // Distancia texto e imagem
-                      Text(
-                        'Nome do Remédio',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w500,
+                    );
+                  },
+                  borderRadius: BorderRadius.circular(8), // Mesmo raio da borda do Container
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 13.0),
+                    decoration: BoxDecoration(
+                      color: Colors.teal[200],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 120,
+                          height: 120,
+                          margin: const EdgeInsets.all(13.0),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Icon(
+                            Icons.image,
+                            color: Colors.grey[400],
+                            size: 60,
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 5), // Distancia texto e imagem
+                        Text(
+                          'Remédio ${index + 1}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -153,7 +168,7 @@ class _HomeScreenState extends State<Home> {
           ),
         ),
         // Config screen content
-        ConfigScreen()
+        const ConfigScreen()
       ],
       actionBarView: Container(
         height: MediaQuery.of(context).size.height,
@@ -179,11 +194,11 @@ class AboutScreen extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_back),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: onBack,
                 ),
-                SizedBox(width: 20),
-                Text(
+                const SizedBox(width: 20),
+                const Text(
                   'Sobre o Aplicativo',
                   style: TextStyle(
                     fontSize: 22,
@@ -193,7 +208,7 @@ class AboutScreen extends StatelessWidget {
               ],
             ),
           ),
-          Expanded(
+          const Expanded(
             child: SingleChildScrollView(
               padding: EdgeInsets.all(20),
               child: Column(
@@ -313,9 +328,9 @@ class FeatureItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: Colors.teal.withOpacity(0.1),
+              color: Colors.teal,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Icon(
@@ -323,22 +338,22 @@ class FeatureItem extends StatelessWidget {
               color: Colors.teal,
             ),
           ),
-          SizedBox(width: 15),
+          const SizedBox(width: 15),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   description,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black87,
                     fontSize: 14,
                   ),

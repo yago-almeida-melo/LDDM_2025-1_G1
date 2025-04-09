@@ -3,6 +3,7 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  bottom_navbar_player
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
