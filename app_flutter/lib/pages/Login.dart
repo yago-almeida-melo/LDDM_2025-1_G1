@@ -25,10 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Logo ou título
-              Image.asset(
-                'images/logo-leia-a-bula.png', width: 300, height: 200
-              ),
-
+              const Icon(Icons.visibility, size: 150, color: Colors.indigoAccent),
+              const Text('Visia', style: TextStyle(color: Colors.indigoAccent,fontSize: 50),),
               const SizedBox(height: 30),
 
               // Campo de Email
