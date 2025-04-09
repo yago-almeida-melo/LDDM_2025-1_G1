@@ -335,7 +335,7 @@ class FeatureItem extends StatelessWidget {
             ),
             child: Icon(
               icon,
-              color: Colors.teal,
+              color: Colors.white,
             ),
           ),
           const SizedBox(width: 15),
