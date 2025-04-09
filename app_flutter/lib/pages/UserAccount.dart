@@ -29,7 +29,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
             );
           },
         ),
-        title: const Text('Minha conta'),
+        title: const Text('Minha Conta'),
         centerTitle: true,
       ),
       body: Padding(

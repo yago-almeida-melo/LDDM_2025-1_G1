@@ -4,6 +4,7 @@ import 'package:curved_nav_bar/flutter_curved_bottom_nav_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:app_flutter/pages/Config.dart';
 import 'package:app_flutter/pages/UserAccount.dart';
+import 'package:app_flutter/pages/QrCodeReader.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -20,7 +21,10 @@ class _HomeScreenState extends State<Home> {
     return CurvedNavBar(
       actionButton: CurvedActionBar(
         onTab: (value) {
-          print(value);
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => QRCodeScannerSecreen())
+          );
         },
         activeIcon: Container(
           padding: EdgeInsets.all(8),
