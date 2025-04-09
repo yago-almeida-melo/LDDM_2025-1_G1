@@ -108,10 +108,47 @@ class _HomeScreenState extends State<Home> {
               _showAboutScreen = false;
             });
           })
-              : Center(
-            child: Text(
-              'Conteúdo principal do app',
-              style: TextStyle(fontSize: 24),
+              : ListView(
+            padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 150.0),
+            children: List.generate(
+              7, // num de elementos
+                  (index) => Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 13.0),
+                  decoration: BoxDecoration(
+                    color: Colors.teal[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 120,
+                        height: 120,
+                        margin: const EdgeInsets.all(13.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Icon(
+                          Icons.image,
+                          color: Colors.grey[400],
+                          size: 60,
+                        ),
+                      ),
+                      SizedBox(width: 5), // Distancia texto e imagem
+                      Text(
+                        'Nome do Remédio',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ),
