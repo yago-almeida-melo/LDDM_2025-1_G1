@@ -25,8 +25,8 @@ class _LoginScreenState extends State<LoginScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               // Logo ou título
-              const Icon(Icons.visibility, size: 150, color: Colors.indigoAccent),
-              const Text('Visia', style: TextStyle(color: Colors.indigoAccent,fontSize: 50),),
+              const Icon(Icons.visibility, size: 150, color: Colors.teal),
+              const Text('Visia', style: TextStyle(color: Colors.teal,fontSize: 50),),
               const SizedBox(height: 30),
 
               // Campo de Email
@@ -82,8 +82,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.tealAccent,
-                  foregroundColor: Colors.black, // Cor do texto e ícones
+                  backgroundColor: Colors.teal,
+                  foregroundColor: Colors.white, // Cor do texto e ícones
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
