@@ -31,6 +31,10 @@ dependencies:
   flutter:
     sdk: flutter
   curved_nav_bar: ^0.0.2
+  bottom_navbar_player: ^0.1.0
+  flutter_tts: ^4.2.2
+  scan: ^1.6.0
+  images_picker: ^1.2.11
 
 dev_dependencies:
   flutter_test:
