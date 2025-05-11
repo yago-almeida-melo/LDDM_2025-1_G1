@@ -49,23 +49,22 @@ class SQLHelper {
 
     final dados = {
       'nome': nome,
-      'valor': valor,
-      'ean': ean,
-      'qte': qte,
+      'email': email,
+      'senha': senha,
       'createdAt': DateTime.now().toString()
     };
 
     final result =
-    await db.update('produtos', dados, where: "id = ?", whereArgs: [id]);
+    await db.update('usuarios', dados, where: "id = ?", whereArgs: [id]);
     return result;
   }
 
-  static Future<void> apagaProduto(int id) async {
+  static Future<void> deleteUser(int id) async {
     final db = await SQLHelper.db();
     try {
-      await db.delete("produtos", where: "id = ?", whereArgs: [id]);
+      await db.delete("usuarios", where: "id = ?", whereArgs: [id]);
     } catch (err) {
-      debugPrint("Erro ao apagar o item item: $err");
+      debugPrint("Erro ao apagar o item: $err");
     }
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:app_flutter/pages/Register.dart';
 import '/pages/Home.dart';
+import '../database/userDao.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,6 +16,50 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _obscureText = true;
 
+  Future<void> validUser() async {
+    String email = _emailController.text;
+    String senha = _passwordController.text;
+
+    List<Map<String, dynamic>> user = await SQLHelper.getUser(email);
+
+    if (user[0].isNotEmpty) {
+      if (user[0]['senha'] == senha) {
+
+        // Armazenamento do usuário logado
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setInt('loggedInUserId', user[0]['id']);
+        
+        // Navegar para a página Home
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const Home()),
+        );
+      }else{
+        _showErrorDialog("Senha incorreta");
+      }
+    } else {
+      _showErrorDialog("Usuário não encontrado");
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Erro'),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +72,10 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               // Logo ou título
               const Icon(Icons.visibility, size: 150, color: Colors.teal),
-              const Text('Visia', style: TextStyle(color: Colors.teal,fontSize: 50),),
+              const Text(
+                'Visia',
+                style: TextStyle(color: Colors.teal, fontSize: 50),
+              ),
               const SizedBox(height: 30),
 
               // Campo de Email
@@ -34,7 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  prefixIcon: Icon(Icons.email),
+                  prefixIcon: const Icon(Icons.email),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -49,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Senha',
-                  prefixIcon: Icon(Icons.lock),
+                  prefixIcon: const Icon(Icons.lock),
                   suffixIcon: IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility : Icons.visibility_off,
@@ -74,35 +123,28 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     // Lógica de recuperação de senha
                   },
-                  child: Text('Esqueceu a senha?'),
+                  child: const Text('Esqueceu a senha?'),
                 ),
               ),
 
               const SizedBox(height: 40),
 
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.teal,
-                  foregroundColor: Colors.white, // Cor do texto e ícones
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const Text(
-                  'Entrar',
-                  style: TextStyle(fontSize: 24),
-                ),
-                onPressed: () {
-                  // Lógica de login
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Home()
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.teal,
+                    foregroundColor: Colors.white, // Cor do texto e ícones
+                    minimumSize: const Size(double.infinity, 50),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                  );
-                },
-              ),
+                  ),
+                  child: const Text(
+                    'Entrar',
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  onPressed: () async {
+                    await validUser();
+                  }),
 
               const SizedBox(height: 50),
 
@@ -126,7 +168,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Botão Apple
                   _buildSocialButton(
-                    icon: Icon(Icons.apple, color: Colors.white, size: 24),
+                    icon:
+                        const Icon(Icons.apple, color: Colors.white, size: 24),
                     onPressed: () {
                       // Lógica de login com Apple
                     },
@@ -136,7 +179,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   // Botão Facebook
                   _buildSocialButton(
-                    icon: Icon(Icons.facebook, color: Colors.white, size: 24),
+                    icon: const Icon(Icons.facebook,
+                        color: Colors.white, size: 24),
                     onPressed: () {
                       // Lógica de login com Facebook
                     },
@@ -160,17 +204,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Register()
-                        ),
+                            builder: (context) => const Register()),
                       );
                     },
                     child: const Text(
                       'Registre-se',
                       style: TextStyle(
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20
-                      ),
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20),
                     ),
                   ),
                 ],

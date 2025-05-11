@@ -24,7 +24,7 @@ class _ConfigScreenState extends State<ConfigScreen>{
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => Home() )
+                    builder: (context) => const Home() )
                 );
           },
         ),
@@ -36,7 +36,7 @@ class _ConfigScreenState extends State<ConfigScreen>{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
+            const Center(
               child: Icon(
                 Icons.settings,
                 size: 80,

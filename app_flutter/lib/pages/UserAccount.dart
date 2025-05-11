@@ -25,7 +25,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
           onPressed: () {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Home())
+                MaterialPageRoute(builder: (context) => const Home())
             );
           },
         ),
@@ -39,7 +39,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Center(
+              const Center(
                 child: Icon(
                   Icons.account_circle,
                   size: 80,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '/pages/Login.dart';
+import '../database/userDao.dart';
 
 class Register extends StatefulWidget {
   const Register({Key? key}) : super(key: key);
@@ -137,14 +138,9 @@ class _RegisterState extends State<Register> {
 
                 // Botão de Cadastrar
                 ElevatedButton(
-                  onPressed: (){
-                    _registerUser;
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => LoginScreen()
-                      ),
-                    );},
+                  onPressed: () async{
+                    await _registerUser();
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.tealAccent,
                     minimumSize: const Size(double.infinity, 50),
@@ -168,14 +164,12 @@ class _RegisterState extends State<Register> {
     );
   }
 
-  void _registerUser() {
-    // Lógica de validação e registro
+  Future<void> _registerUser() async {
     String name = _nameController.text.trim();
     String email = _emailController.text.trim();
     String password = _passwordController.text;
     String confirmPassword = _confirmPasswordController.text;
 
-    // Validações básicas
     if (name.isEmpty || email.isEmpty || password.isEmpty) {
       _showErrorDialog('Preencha todos os campos');
       return;
@@ -186,9 +180,20 @@ class _RegisterState extends State<Register> {
       return;
     }
 
-    // Aqui você adicionaria a lógica de registro real
-    // Por exemplo, chamada de API, salvamento no banco de dados, etc.
-    print('Registrando usuário: $name, $email');
+    try {
+      int userId = await SQLHelper.insertUser(name, email, password);
+      if (userId > 0) {
+        // Cadastro bem-sucedido, redirecionar para tela de login
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()),
+        );
+      } else {
+        _showErrorDialog('Erro ao cadastrar usuário');
+      }
+    } catch (e) {
+      _showErrorDialog('Erro: ${e.toString()}');
+    }
   }
 
   void _showErrorDialog(String message) {

@@ -24,7 +24,7 @@ class _HomeScreenState extends State<Home> {
         onTab: (value) {
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => QRCodeScannerSecreen())
+              MaterialPageRoute(builder: (context) => const QRCodeScannerSecreen())
           );
         },
         activeIcon: Container(

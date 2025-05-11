@@ -17,7 +17,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerSecreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Home()));
+                context, MaterialPageRoute(builder: (context) => const Home()));
           },
         ),
       ),
@@ -26,7 +26,7 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerSecreen> {
           Expanded(
             child: Container(
               color: Colors.white,
-              child: Center(
+              child: const Center(
                 child:
                     Icon(Icons.qr_code_scanner, size: 100, color: Colors.grey),
               ),
@@ -34,20 +34,20 @@ class _QRCodeScannerScreenState extends State<QRCodeScannerSecreen> {
           ),
           Container(
             color: Colors.black,
-            padding: EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: 16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
-                  icon: Icon(Icons.image, color: Colors.white),
+                  icon: const Icon(Icons.image, color: Colors.white),
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: Icon(Icons.circle, color: Colors.white, size: 60),
+                  icon: const Icon(Icons.circle, color: Colors.white, size: 60),
                   onPressed: () {},
                 ),
                 IconButton(
-                  icon: Icon(Icons.refresh, color: Colors.white),
+                  icon: const Icon(Icons.refresh, color: Colors.white),
                   onPressed: () {},
                 ),
               ],
