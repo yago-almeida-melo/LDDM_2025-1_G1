@@ -43,8 +43,7 @@ class SQLHelper {
     return db.query('usuarios', where: "email = ?", whereArgs: [email], limit: 1);
   }
 
-  static Future<int> updateUser(
-      int id, String nome, String email, String senha) async {
+  static Future<int> updateUser(String nome, String email, String senha) async {
     final db = await SQLHelper.db();
 
     final dados = {
@@ -55,7 +54,7 @@ class SQLHelper {
     };
 
     final result =
-    await db.update('usuarios', dados, where: "id = ?", whereArgs: [id]);
+    await db.update('usuarios', dados, where: "email = ?", whereArgs: [email]);
     return result;
   }
 
