@@ -2,16 +2,24 @@ import 'package:flutter/material.dart';
 
 class User {
   final int? id;
-  final String name;
+  final String nome;
   final String email;
-  final String password;
+  final String? password;
 
   User({
     this.id,
-    required this.name,
+    required this.nome,
     required this.email,
-    required this.password,
+    this.password,
   });
+
+    factory User.fromJson(Map<String, dynamic> json) {
+      return User(
+        id: json['id'],
+        nome: json['nome'],
+        email: json['email'],
+      );
+  }
 
   // // Converter de Map (usado pelo SQLite)
   // factory User.fromMap(Map<String, dynamic> map) {

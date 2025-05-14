@@ -1,8 +1,9 @@
+import 'package:app_flutter/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:app_flutter/pages/Register.dart';
 import '/pages/Home.dart';
 import '../database/userDao.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,6 +17,13 @@ class _LoginScreenState extends State<LoginScreen> {
   final _passwordController = TextEditingController();
   bool _obscureText = true;
 
+  Future<void> salvarUsuarioNoStorage(User usuario) async {
+    const secureStorage = FlutterSecureStorage();
+    await secureStorage.write(key: 'id', value: usuario.id.toString());
+    await secureStorage.write(key: 'nome', value: usuario.nome);
+    await secureStorage.write(key: 'email', value: usuario.email);
+  }
+
   Future<void> validUser() async {
     String email = _emailController.text;
     String senha = _passwordController.text;
@@ -25,16 +33,16 @@ class _LoginScreenState extends State<LoginScreen> {
     if (user[0].isNotEmpty) {
       if (user[0]['senha'] == senha) {
 
-        // Armazenamento do usuário logado
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setInt('loggedInUserId', user[0]['id']);
-        
+        //Armazenar usuário no local Storage
+        final usuario = User.fromJson(user[0]);
+        await salvarUsuarioNoStorage(usuario);
+
         // Navegar para a página Home
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => const Home()),
         );
-      }else{
+      } else {
         _showErrorDialog("Senha incorreta");
       }
     } else {

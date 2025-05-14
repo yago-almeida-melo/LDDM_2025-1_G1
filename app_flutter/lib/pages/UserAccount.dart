@@ -1,5 +1,7 @@
+import 'package:app_flutter/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:app_flutter/pages/Home.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserAccountScreen extends StatefulWidget {
   const UserAccountScreen({super.key});
@@ -11,10 +13,24 @@ class UserAccountScreen extends StatefulWidget {
 class _UserAccountScreenState extends State<UserAccountScreen> {
   final _formKey = GlobalKey<FormState>(); // Para validar os campos
 
-  String _name = 'André';
-  String _email = 'andre@gmail.com';
+  String _name = '';
+  String _email = '';
   String _password = '';
   String _confirmPassword = '';
+
+  Future<void> recuperarUsuarioDoStorage() async {
+    const secureStorage = FlutterSecureStorage();
+
+    final nome = await secureStorage.read(key: 'nome');
+    final email = await secureStorage.read(key: 'email');
+
+    if (nome != null && email != null) {
+      setState(() {
+        _name = nome;
+        _email = email;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +40,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Home())
-            );
+                context, MaterialPageRoute(builder: (context) => const Home()));
           },
         ),
         title: const Text('Minha Conta'),
@@ -47,7 +61,6 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-
               buildTextField(
                 label: "Nome",
                 initialValue: _name,
@@ -69,15 +82,14 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                 obscureText: true,
                 onChanged: (value) => _confirmPassword = value,
               ),
-
               const SizedBox(height: 20),
-
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 12),
-                    textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    textStyle: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
@@ -118,7 +130,8 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
             obscureText: obscureText,
             onChanged: onChanged,
             decoration: InputDecoration(
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
               filled: true,
               fillColor: Colors.grey[200],
             ),
@@ -132,5 +145,11 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
         ],
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    recuperarUsuarioDoStorage();
   }
 }
