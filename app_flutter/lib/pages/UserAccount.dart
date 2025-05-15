@@ -84,7 +84,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
 
         // Salvar a senha apenas se uma nova senha foi informada
         if (_password.isNotEmpty) {
-          SQLHelper.updateUser(_name, _email, _password);
+          Userdao.updateUser(_name, _email, _password);
 
           // Atualizar a senha atual na memória
           setState(() {

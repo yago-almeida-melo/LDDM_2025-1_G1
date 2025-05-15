@@ -28,7 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
     String email = _emailController.text;
     String senha = _passwordController.text;
 
-    List<Map<String, dynamic>> user = await SQLHelper.getUser(email);
+    List<Map<String, dynamic>> user = await Userdao.getUser(email);
 
     if (user[0].isNotEmpty) {
       if (user[0]['senha'] == senha) {

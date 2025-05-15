@@ -181,7 +181,7 @@ class _RegisterState extends State<Register> {
     }
 
     try {
-      int userId = await SQLHelper.insertUser(name, email, password);
+      int userId = await Userdao.insertUser(name, email, password);
       if (userId > 0) {
         // Cadastro bem-sucedido, redirecionar para tela de login
         Navigator.pushReplacement(
