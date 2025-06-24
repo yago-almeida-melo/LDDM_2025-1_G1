@@ -7,7 +7,6 @@ class BulaProvider {
       if (textoCompletoDaBula.isEmpty) {
         return "O texto da bula está vazio.";
       }
-      // A única responsabilidade agora é chamar o serviço da IA.
       final bulaSimplificada = await BulaAISimplifierService.simplificarTextoDaBula(textoCompletoDaBula);
       return bulaSimplificada;
     } catch (e) {

@@ -48,11 +48,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
     }
   }
 
-  // O MÉTODO ABAIXO FOI REMOVIDO PORQUE NÃO É MAIS NECESSÁRIO
-  // Future<void> _buscarBulaSimplificada() async { ... }
-
-  // --- LÓGICA DO TEXT-TO-SPEECH (TTS) ---
-
   Future<void> _setupTts() async {
     await flutterTts.setLanguage("pt-BR");
     flutterTts.setStartHandler(() => setState(() => isPlaying = true));

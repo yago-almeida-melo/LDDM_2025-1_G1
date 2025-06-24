@@ -7,7 +7,7 @@ import 'package:app_flutter/pages/Config.dart';
 import 'package:app_flutter/pages/UserAccount.dart';
 import 'package:app_flutter/pages/QrCodeReader.dart';
 
-// Modelo de dados para os remédios estáticos
+
 class RemedioEstatico {
   final String nome;
   final String bulaCompleta;
@@ -16,7 +16,7 @@ class RemedioEstatico {
   RemedioEstatico({
     required this.nome,
     required this.bulaCompleta,
-    this.icone = Icons.medication_liquid, // Ícone padrão
+    this.icone = Icons.medication_liquid,
   });
 }
 
@@ -27,12 +27,9 @@ class Home extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-// A CLASSE DUPLICADA FOI REMOVIDA DAQUI
-
 class _HomeScreenState extends State<Home> {
   bool _showAboutScreen = false;
 
-  // Lista estática com os dados dos remédios para a demonstração
   final List<RemedioEstatico> listaDeRemedios = [
     RemedioEstatico(
       nome: "Dipirona",
