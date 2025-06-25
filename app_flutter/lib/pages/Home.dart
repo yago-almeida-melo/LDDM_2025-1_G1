@@ -6,7 +6,7 @@ import 'package:app_flutter/pages/Details.dart';
 import 'package:app_flutter/pages/Config.dart';
 import 'package:app_flutter/pages/UserAccount.dart';
 import 'package:app_flutter/pages/QrCodeReader.dart';
-
+import 'package:app_flutter/pages/OCRScreen.dart';
 
 class RemedioEstatico {
   final String nome;
@@ -76,12 +76,13 @@ class _HomeScreenState extends State<Home> {
         onTab: (value) {
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const QRCodeScannerSecreen())
-          );
+              MaterialPageRoute(
+                  builder: (context) => const OCRScreen()));
         },
         activeIcon: Container(
           padding: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+          decoration:
+              const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
           child: const Icon(
             Icons.camera_alt,
             size: 50,
@@ -90,7 +91,8 @@ class _HomeScreenState extends State<Home> {
         ),
         inActiveIcon: Container(
           padding: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(color: Colors.white70, shape: BoxShape.circle),
+          decoration: const BoxDecoration(
+              color: Colors.white70, shape: BoxShape.circle),
           child: const Icon(
             Icons.camera_alt_outlined,
             size: 50,
@@ -152,75 +154,76 @@ class _HomeScreenState extends State<Home> {
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const UserAccountScreen())
-                  );
+                      MaterialPageRoute(
+                          builder: (context) => const UserAccountScreen()));
                 },
               ),
             ],
           ),
           body: _showAboutScreen
-              ? AboutScreen(onBack: () => setState(() => _showAboutScreen = false))
+              ? AboutScreen(
+                  onBack: () => setState(() => _showAboutScreen = false))
               : ListView.builder(
-            padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 150.0),
-            itemCount: listaDeRemedios.length,
-            itemBuilder: (context, index) {
-              final remedio = listaDeRemedios[index];
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailsScreen(
-                          nomeRemedio: remedio.nome,
-                          textoCompletoBula: remedio.bulaCompleta,
+                  padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 150.0),
+                  itemCount: listaDeRemedios.length,
+                  itemBuilder: (context, index) {
+                    final remedio = listaDeRemedios[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailsScreen(
+                                nomeRemedio: remedio.nome,
+                                textoCompletoBula: remedio.bulaCompleta,
+                              ),
+                            ),
+                          );
+                        },
+                        borderRadius: BorderRadius.circular(8),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 13.0),
+                          decoration: BoxDecoration(
+                            color: Colors.teal[200],
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 120,
+                                height: 120,
+                                margin: const EdgeInsets.all(13.0),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                                child: Icon(
+                                  remedio.icone,
+                                  color: Colors.grey[400],
+                                  size: 60,
+                                ),
+                              ),
+                              const SizedBox(width: 5),
+                              Expanded(
+                                child: Text(
+                                  remedio.nome,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     );
                   },
-                  borderRadius: BorderRadius.circular(8),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 13.0),
-                    decoration: BoxDecoration(
-                      color: Colors.teal[200],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 120,
-                          height: 120,
-                          margin: const EdgeInsets.all(13.0),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Icon(
-                            remedio.icone,
-                            color: Colors.grey[400],
-                            size: 60,
-                          ),
-                        ),
-                        const SizedBox(width: 5),
-                        Expanded(
-                          child: Text(
-                            remedio.nome,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 ),
-              );
-            },
-          ),
         ),
         const ConfigScreen()
       ],
@@ -311,17 +314,20 @@ class AboutScreen extends StatelessWidget {
                   FeatureItem(
                     icon: Icons.text_fields,
                     title: 'Identificar Letra',
-                    description: 'Reconhecimento preciso de texto em materiais impressos.',
+                    description:
+                        'Reconhecimento preciso de texto em materiais impressos.',
                   ),
                   FeatureItem(
                     icon: Icons.record_voice_over,
                     title: 'Ler em Voz Alta',
-                    description: 'Conversão de texto para áudio com vozes naturais.',
+                    description:
+                        'Conversão de texto para áudio com vozes naturais.',
                   ),
                   FeatureItem(
                     icon: Icons.format_size,
                     title: 'Aumentar Tamanho da Letra',
-                    description: 'Ajuste do tamanho do texto para melhor visualização.',
+                    description:
+                        'Ajuste do tamanho do texto para melhor visualização.',
                   ),
                   FeatureItem(
                     icon: Icons.speed,
@@ -331,7 +337,8 @@ class AboutScreen extends StatelessWidget {
                   FeatureItem(
                     icon: Icons.mic,
                     title: 'Navegação por Comando de Voz',
-                    description: 'Interface acessível controlada por comandos de voz.',
+                    description:
+                        'Interface acessível controlada por comandos de voz.',
                   ),
                   SizedBox(height: 20),
                   Text(
