@@ -116,9 +116,9 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                     textStyle: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  onPressed: () {
+                  onPressed: async() {
                     if (_formKey.currentState!.validate()) {
-                      print("Nome: $_name, Email: $_email, Senha: $_password");
+                      await atualizarUsuario()
                     }
                   },
                   child: const Text("Salvar"),
