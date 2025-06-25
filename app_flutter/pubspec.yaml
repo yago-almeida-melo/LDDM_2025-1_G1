@@ -48,7 +48,7 @@ dependencies:
   image_picker:
 
   # Alternativa moderna e popular para scan de QR/Barcodes
-  mobile_scanner: 5.1.1
+  mobile_scanner: ^7.0.1
 
   # Pacotes que você já usava, agora liberados para atualização
   curved_nav_bar:
@@ -71,7 +71,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0 # Atualizado para a versão mais recente
+  flutter_lints: ^6.0.0 # Atualizado para a versão mais recente
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
