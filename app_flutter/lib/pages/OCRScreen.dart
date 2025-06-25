@@ -6,7 +6,7 @@ import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 
 class OCRScreen extends StatefulWidget {
-  const OCRScreen({super.key})
+  const OCRScreen({super.key});
 
   @override
   _OCRScreenState createState() => _OCRScreenState();
