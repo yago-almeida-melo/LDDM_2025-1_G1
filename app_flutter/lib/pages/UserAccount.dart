@@ -46,7 +46,7 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
         title: const Text('Minha Conta'),
         centerTitle: true,
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
@@ -93,7 +93,6 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // Salvar as informações
                       print("Nome: $_name, Email: $_email, Senha: $_password");
                     }
                   },
