@@ -2,6 +2,7 @@ import 'package:app_flutter/models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:app_flutter/pages/Home.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:app_flutter/database/userDao.dart';
 
 class UserAccountScreen extends StatefulWidget {
   const UserAccountScreen({super.key});
@@ -31,6 +32,30 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
       });
     }
   }
+
+  Future<void> atualizarUsuario() async {
+    const secureStorage = FlutterSecureStorage();
+
+    // Recupera o ID do usuário no secure storage
+    final idString = await secureStorage.read(key: 'id');
+
+    if (idString != null) {
+      final userId = int.tryParse(idString);
+
+      if (userId != null) {
+        await SQLHelper.updateUser(userId, _name, _email, _password);
+
+        // Atualiza os dados no Secure Storage
+        await secureStorage.write(key: 'nome', value: _name);
+        await secureStorage.write(key: 'email', value: _email);
+      } else {
+        debugPrint('ID do usuário inválido no storage');
+      }
+    } else {
+      debugPrint('ID do usuário não encontrado no storage');
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {

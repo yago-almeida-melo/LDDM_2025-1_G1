@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:app_flutter/pages/Home.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 
 class ConfigScreen extends StatefulWidget {
   const ConfigScreen({super.key});
@@ -13,6 +15,32 @@ class _ConfigScreenState extends State<ConfigScreen>{
   double _speed = 1.0;
   String _selectedVoice = 'Maria';
   int _fontSize = 12;
+
+  final _secureStorage = const FlutterSecureStorage();
+
+  Future<void> carregarConfiguracoes() async {
+    final speed = await _secureStorage.read(key: 'config_speed');
+    final voice = await _secureStorage.read(key: 'config_voice');
+    final fontSize = await _secureStorage.read(key: 'config_fontSize');
+
+    setState(() {
+      _speed = double.tryParse(speed ?? '1.0') ?? 1.0;
+      _selectedVoice = voice ?? 'Maria';
+      _fontSize = int.tryParse(fontSize ?? '12') ?? 12;
+    });
+  }
+
+  Future<void> salvarConfiguracoes() async {
+    await _secureStorage.write(key: 'config_speed', value: _speed.toString());
+    await _secureStorage.write(key: 'config_voice', value: _selectedVoice);
+    await _secureStorage.write(key: 'config_fontSize', value: _fontSize.toString());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    carregarConfiguracoes();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +110,13 @@ class _ConfigScreenState extends State<ConfigScreen>{
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   textStyle: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                onPressed: () {},
+                  onPressed: () async {
+                    await salvarConfiguracoes();
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Configurações salvas com sucesso!')),
+                    );
+                  },
                 child: const Text("Salvar"),
               ),
             ),
@@ -128,3 +162,6 @@ class _ConfigScreenState extends State<ConfigScreen>{
     );
   }
 }
+
+
+
