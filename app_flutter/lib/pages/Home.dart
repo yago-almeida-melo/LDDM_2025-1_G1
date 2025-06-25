@@ -226,7 +226,7 @@ class _HomeScreenState extends State<Home> {
       ],
       actionBarView: Container(
         height: MediaQuery.of(context).size.height,
-        color: Colors.orange,
+        color: Colors.white,
       ),
     );
   }
