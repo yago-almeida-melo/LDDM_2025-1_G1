@@ -116,9 +116,9 @@ class _UserAccountScreenState extends State<UserAccountScreen> {
                     textStyle: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.bold),
                   ),
-                  onPressed: async() {
+                  onPressed: ()async {
                     if (_formKey.currentState!.validate()) {
-                      await atualizarUsuario()
+                      await atualizarUsuario();
                     }
                   },
                   child: const Text("Salvar"),
