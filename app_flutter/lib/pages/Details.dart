@@ -9,9 +9,11 @@ enum TtsState { playing, paused, stopped }
 class DetailsScreen extends StatefulWidget {
   final String nomeRemedio;
   final String textoCompletoBula;
+  final int indiceRemedio;
 
   const DetailsScreen({
     super.key,
+    required this.indiceRemedio,
     required this.nomeRemedio,
     required this.textoCompletoBula,
   });

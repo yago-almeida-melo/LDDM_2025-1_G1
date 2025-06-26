@@ -6,19 +6,7 @@ import 'package:app_flutter/pages/Details.dart';
 import 'package:app_flutter/pages/Config.dart';
 import 'package:app_flutter/pages/UserAccount.dart';
 import 'package:app_flutter/pages/QrCodeReader.dart';
-import 'package:app_flutter/pages/OCRScreen.dart';
-
-class RemedioEstatico {
-  final String nome;
-  final String bulaCompleta;
-  final IconData icone;
-
-  RemedioEstatico({
-    required this.nome,
-    required this.bulaCompleta,
-    this.icone = Icons.medication_liquid,
-  });
-}
+import 'package:app_flutter/pages/OCRScreen.dart'; // Nova importação
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -30,54 +18,14 @@ class Home extends StatefulWidget {
 class _HomeScreenState extends State<Home> {
   bool _showAboutScreen = false;
 
-  final List<RemedioEstatico> listaDeRemedios = [
-    RemedioEstatico(
-      nome: "Dipirona",
-      bulaCompleta: """
-        INDICAÇÕES: Este medicamento é indicado como analgésico (para dor) e antitérmico (para febre).
-        CONTRAINDICAÇÕES: Não deve ser utilizada caso você tenha: alergia ou intolerância à dipirona ou a qualquer um dos componentes da formulação; funções da medula óssea prejudicadas ou doenças do sistema hematopoiético; desenvolvido broncoespasmo ou outras reações anafilactoides, como urticária, rinite, angioedema com uso de medicamentos para dor; porfiria hepática aguda intermitente; deficiência congênita da glicose-6-fosfato-desidrogenase. Este medicamento é contraindicado para menores de 3 meses de idade ou pesando menos de 5 kg.
-        POSOLOGIA E MODO DE USAR: Adultos e adolescentes acima de 15 anos: 1 a 2 comprimidos até 4 vezes ao dia. Crianças: o uso deve ser conforme orientação médica. Não exceder a dose máxima diária.
-        REAÇÕES ADVERSAS: Em casos raros, pode ocorrer choque anafilático. As reações cutâneas mais comuns são erupções e urticária. Síndrome de Stevens-Johnson e Necrólise Epidérmica Tóxica podem ocorrer. Reações hematológicas como agranulocitose são raras mas graves, exigindo descontinuação imediata. Em caso de superdose, procurar socorro médico imediatamente.
-      """,
-    ),
-    RemedioEstatico(
-      nome: "Paracetamol",
-      bulaCompleta: """
-        INDICAÇÕES: Paracetamol é indicado para o alívio temporário de dores leves a moderadas associadas a gripes e resfriados comuns, dor de cabeça, dor de dente, dor nas costas, dores musculares, cólicas menstruais e para a redução da febre.
-        CONTRAINDICAÇÕES: Este produto não deve ser administrado a pacientes com hipersensibilidade ao paracetamol ou a qualquer outro componente de sua fórmula. Não use outro produto que contenha paracetamol. Risco de dano hepático.
-        POSOLOGIA E MODO DE USAR: Adultos e crianças acima de 12 anos: 1 comprimido de 750 mg a cada 6-8 horas, não excedendo 4 comprimidos em um período de 24 horas. O tratamento não deve durar mais de 3 dias para febre e 7 dias para dor.
-        REAÇÕES ADVERSAS: Reações de hipersensibilidade como erupção cutânea, urticária e angioedema são raras. Em doses excessivas, pode causar hepatotoxicidade grave, que pode ser fatal. Outros efeitos incluem náuseas, vômitos e dor abdominal.
-      """,
-    ),
-    RemedioEstatico(
-      nome: "Amoxicilina",
-      bulaCompleta: """
-        INDICAÇÕES: Amoxicilina, um antibiótico, é usado no tratamento de infecções bacterianas causadas por microrganismos sensíveis à amoxicilina, como infecções do trato respiratório (sinusite, otite média, faringite, pneumonia), infecções do trato urinário, infecções de pele e tecidos moles.
-        CONTRAINDICAÇÕES: É contraindicado para pacientes com histórico de reação alérgica a qualquer penicilina ou a qualquer componente da formulação. Pacientes com mononucleose infecciosa têm alto risco de desenvolver erupção cutânea.
-        POSOLOGIA E MODO DE USAR: A dose usual para adultos é de 500 mg a cada 8 horas ou 875 mg a cada 12 horas. A duração do tratamento depende do tipo e da gravidade da infecção e deve ser determinada pelo médico. Complete todo o ciclo de tratamento, mesmo que se sinta melhor.
-        REAÇÕES ADVERSAS: As reações mais comuns são diarreia, náusea e erupções cutâneas. Reações alérgicas graves, incluindo anafilaxia, podem ocorrer. Superinfecção, como candidíase, pode ocorrer com o uso prolongado.
-      """,
-    ),
-    RemedioEstatico(
-      nome: "Ibuprofeno",
-      bulaCompleta: """
-        INDICAÇÕES: Ibuprofeno é um anti-inflamatório não esteroide (AINE) com atividade analgésica e antipirética, indicado para o alívio de dores de cabeça, dor de dente, dores musculares, cólicas menstruais, e para o tratamento de febre e sintomas de gripes e resfriados.
-        CONTRAINDICAÇÕES: Hipersensibilidade ao ibuprofeno, a qualquer componente da fórmula ou a outros AINEs. Pacientes com histórico de asma, urticária ou reações alérgicas após tomar aspirina ou outros AINEs. Pacientes com úlcera péptica ativa ou histórico de sangramento gastrointestinal.
-        POSOLOGIA E MODO DE USAR: Adultos: 400 mg a cada 6 a 8 horas. A dose máxima diária não deve exceder 2400 mg. Para dor leve, 200 mg pode ser suficiente. Tomar com alimentos para reduzir o desconforto gástrico.
-        REAÇÕES ADVERSAS: Os efeitos mais comuns são gastrointestinais, como dispepsia, náuseas, vômitos, dor abdominal e diarreia. Pode aumentar o risco de eventos cardiovasculares trombóticos, como infarto do miocárdio e acidente vascular cerebral. Risco de insuficiência renal.
-      """,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return CurvedNavBar(
       actionButton: CurvedActionBar(
         onTab: (value) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const OCRScreen()));
+          // Navegação atualizada para a nova tela de OCR
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const OCRScreen()));
         },
         activeIcon: Container(
           padding: const EdgeInsets.all(8),
@@ -117,6 +65,7 @@ class _HomeScreenState extends State<Home> {
         ),
       ],
       bodyItems: [
+        // Home screen content
         Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.teal,
@@ -147,6 +96,19 @@ class _HomeScreenState extends State<Home> {
             actions: [
               IconButton(
                 icon: const Icon(
+                  Icons.qr_code_scanner,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const QRCodeScannerSecreen()));
+                },
+              ),
+              IconButton(
+                icon: const Icon(
                   Icons.account_circle,
                   color: Colors.white,
                   size: 30,
@@ -161,75 +123,267 @@ class _HomeScreenState extends State<Home> {
             ],
           ),
           body: _showAboutScreen
-              ? AboutScreen(
-                  onBack: () => setState(() => _showAboutScreen = false))
-              : ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 150.0),
-                  itemCount: listaDeRemedios.length,
-                  itemBuilder: (context, index) {
-                    final remedio = listaDeRemedios[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DetailsScreen(
-                                nomeRemedio: remedio.nome,
-                                textoCompletoBula: remedio.bulaCompleta,
-                              ),
-                            ),
-                          );
-                        },
-                        borderRadius: BorderRadius.circular(8),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 13.0),
-                          decoration: BoxDecoration(
-                            color: Colors.teal[200],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 120,
-                                height: 120,
-                                margin: const EdgeInsets.all(13.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                                child: Icon(
-                                  remedio.icone,
-                                  color: Colors.grey[400],
-                                  size: 60,
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              Expanded(
-                                child: Text(
-                                  remedio.nome,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
+              ? AboutScreen(onBack: () {
+                  setState(() {
+                    _showAboutScreen = false;
+                  });
+                })
+              : _buildHomeContent(),
         ),
+        // Config screen content
         const ConfigScreen()
       ],
       actionBarView: Container(
         height: MediaQuery.of(context).size.height,
-        color: Colors.white,
+        color: Colors.orange,
+      ),
+    );
+  }
+
+  Widget _buildHomeContent() {
+    // Combinar remédios padrão com os identificados via OCR
+    final remediosOCR = OCRScreen.listaRemedios;
+    final totalRemedios = 7 + remediosOCR.length; // 7 remédios padrão + OCR
+
+    if (totalRemedios == 0) {
+      return _buildEmptyState();
+    }
+
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 150.0),
+      children: [
+        // Header da lista
+        if (remediosOCR.isNotEmpty) ...[
+          Container(
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(bottom: 20),
+            decoration: BoxDecoration(
+              color: Colors.blue[50],
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.blue[200]!),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.camera_alt,
+                  color: Colors.blue[600],
+                  size: 24,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Remédios Identificados',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue[800],
+                        ),
+                      ),
+                      Text(
+                        '${remediosOCR.length} medicamento(s) adicionado(s) via câmera',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.blue[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+
+        // Lista de remédios
+        ...List.generate(totalRemedios, (index) {
+          final isOCRItem = index < remediosOCR.length;
+          final remedioOCR = isOCRItem ? remediosOCR[index] : null;
+          final nomeRemedio = isOCRItem
+              ? remedioOCR!['nome']
+              : 'Remédio ${index - remediosOCR.length + 1}';
+
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsScreen(
+                      indiceRemedio: index,
+                      nomeRemedio: nomeRemedio,
+                      textoCompletoBula: "",
+                    ),
+                  ),
+                );
+              },
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 13.0),
+                decoration: BoxDecoration(
+                  color: isOCRItem ? Colors.blue[200] : Colors.teal[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 120,
+                      height: 120,
+                      margin: const EdgeInsets.all(13.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: Icon(
+                              isOCRItem ? Icons.camera_alt : Icons.image,
+                              color: Colors.grey[400],
+                              size: 60,
+                            ),
+                          ),
+                          if (isOCRItem)
+                            Positioned(
+                              top: 4,
+                              right: 4,
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: const BoxDecoration(
+                                  color: Colors.blue,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: 12,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            nomeRemedio,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 26,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          if (isOCRItem) ...[
+                            const SizedBox(height: 4),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Text(
+                                'Identificado via OCR',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }),
+
+        // Botão para adicionar novo remédio
+        Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const OCRScreen()),
+              );
+            },
+            icon: const Icon(Icons.add_a_photo),
+            label: const Text('Identificar Novo Remédio'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.teal,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.camera_alt_outlined,
+            size: 120,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'Nenhum remédio identificado',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'Use a câmera para identificar e adicionar medicamentos à sua lista',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[500],
+            ),
+          ),
+          const SizedBox(height: 30),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const OCRScreen()),
+              );
+            },
+            icon: const Icon(Icons.add_a_photo),
+            label: const Text('Identificar Remédio'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.teal,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -315,19 +469,19 @@ class AboutScreen extends StatelessWidget {
                     icon: Icons.text_fields,
                     title: 'Identificar Letra',
                     description:
-                        'Reconhecimento preciso de texto em materiais impressos.',
+                    'Reconhecimento preciso de texto em materiais impressos.',
                   ),
                   FeatureItem(
                     icon: Icons.record_voice_over,
                     title: 'Ler em Voz Alta',
                     description:
-                        'Conversão de texto para áudio com vozes naturais.',
+                    'Conversão de texto para áudio com vozes naturais.',
                   ),
                   FeatureItem(
                     icon: Icons.format_size,
                     title: 'Aumentar Tamanho da Letra',
                     description:
-                        'Ajuste do tamanho do texto para melhor visualização.',
+                    'Ajuste do tamanho do texto para melhor visualização.',
                   ),
                   FeatureItem(
                     icon: Icons.speed,
@@ -338,7 +492,7 @@ class AboutScreen extends StatelessWidget {
                     icon: Icons.mic,
                     title: 'Navegação por Comando de Voz',
                     description:
-                        'Interface acessível controlada por comandos de voz.',
+                    'Interface acessível controlada por comandos de voz.',
                   ),
                   SizedBox(height: 20),
                   Text(
@@ -368,7 +522,6 @@ class AboutScreen extends StatelessWidget {
     );
   }
 }
-
 class FeatureItem extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -427,3 +580,4 @@ class FeatureItem extends StatelessWidget {
     );
   }
 }
+
