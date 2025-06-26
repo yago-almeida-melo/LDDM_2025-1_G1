@@ -42,6 +42,11 @@ class DatabaseHelper {
         await createTableUser(database);
         await createTableMedicamentos(database);
       },
+      onUpgrade: (db, oldVersion, newVersion) async {
+      if (oldVersion < 2) {
+        await createTableMedicamentos(db);
+      }
+    },
     );
   }
 }
