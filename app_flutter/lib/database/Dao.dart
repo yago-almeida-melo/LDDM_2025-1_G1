@@ -37,7 +37,7 @@ class DatabaseHelper {
   static Future<sql.Database> initDb() async {
     return sql.openDatabase(
       'visia.db',
-      version: 1,
+      version: 2,
       onCreate: (sql.Database database, int version) async {
         await createTableUser(database);
         await createTableMedicamentos(database);
