@@ -6,6 +6,7 @@ import 'package:app_flutter/pages/Details.dart';
 import 'package:app_flutter/pages/Config.dart';
 import 'package:app_flutter/pages/UserAccount.dart';
 import 'package:app_flutter/pages/QrCodeReader.dart';
+import 'package:app_flutter/pages/OCRScreen.dart'; // Nova importação
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -22,14 +23,14 @@ class _HomeScreenState extends State<Home> {
     return CurvedNavBar(
       actionButton: CurvedActionBar(
         onTab: (value) {
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => QRCodeScannerSecreen())
-          );
+          // Navegação atualizada para a nova tela de OCR
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const OCRScreen()));
         },
         activeIcon: Container(
           padding: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+          decoration:
+              const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
           child: const Icon(
             Icons.camera_alt,
             size: 50,
@@ -38,7 +39,8 @@ class _HomeScreenState extends State<Home> {
         ),
         inActiveIcon: Container(
           padding: const EdgeInsets.all(8),
-          decoration: const BoxDecoration(color: Colors.white70, shape: BoxShape.circle),
+          decoration: const BoxDecoration(
+              color: Colors.white70, shape: BoxShape.circle),
           child: const Icon(
             Icons.camera_alt_outlined,
             size: 50,
@@ -77,7 +79,7 @@ class _HomeScreenState extends State<Home> {
                   });
                 },
                 child: const Icon(
-                  Icons.info, // Ícone de logo como botão
+                  Icons.info,
                   color: Colors.white,
                   size: 30,
                 ),
@@ -94,82 +96,39 @@ class _HomeScreenState extends State<Home> {
             actions: [
               IconButton(
                 icon: const Icon(
-                  Icons.account_circle, // Ícone de perfil
+                  Icons.qr_code_scanner,
                   color: Colors.white,
                   size: 30,
                 ),
                 onPressed: () {
                   Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const UserAccountScreen())
-                  );
+                      MaterialPageRoute(
+                          builder: (context) => const QRCodeScannerSecreen()));
+                },
+              ),
+              IconButton(
+                icon: const Icon(
+                  Icons.account_circle,
+                  color: Colors.white,
+                  size: 30,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const UserAccountScreen()));
                 },
               ),
             ],
           ),
           body: _showAboutScreen
               ? AboutScreen(onBack: () {
-            setState(() {
-              _showAboutScreen = false;
-            });
-          })
-              : ListView(
-            padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 150.0),
-            children: List.generate(
-              7, // num de elementos
-                  (index) => Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => DetailsScreen(
-                          indiceRemedio: index,
-                          nomeRemedio: 'Remédio ${index + 1}',
-                        ),
-                      ),
-                    );
-                  },
-                  borderRadius: BorderRadius.circular(8), // Mesmo raio da borda do Container
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 13.0),
-                    decoration: BoxDecoration(
-                      color: Colors.teal[200],
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 120,
-                          height: 120,
-                          margin: const EdgeInsets.all(13.0),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          child: Icon(
-                            Icons.image,
-                            color: Colors.grey[400],
-                            size: 60,
-                          ),
-                        ),
-                        const SizedBox(width: 5), // Distancia texto e imagem
-                        Text(
-                          'Remédio ${index + 1}',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
+                  setState(() {
+                    _showAboutScreen = false;
+                  });
+                })
+              : _buildHomeContent(),
         ),
         // Config screen content
         const ConfigScreen()
@@ -177,6 +136,254 @@ class _HomeScreenState extends State<Home> {
       actionBarView: Container(
         height: MediaQuery.of(context).size.height,
         color: Colors.orange,
+      ),
+    );
+  }
+
+  Widget _buildHomeContent() {
+    // Combinar remédios padrão com os identificados via OCR
+    final remediosOCR = OCRScreen.listaRemedios;
+    final totalRemedios = 7 + remediosOCR.length; // 7 remédios padrão + OCR
+
+    if (totalRemedios == 0) {
+      return _buildEmptyState();
+    }
+
+    return ListView(
+      padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 150.0),
+      children: [
+        // Header da lista
+        if (remediosOCR.isNotEmpty) ...[
+          Container(
+            padding: const EdgeInsets.all(16),
+            margin: const EdgeInsets.only(bottom: 20),
+            decoration: BoxDecoration(
+              color: Colors.blue[50],
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: Colors.blue[200]!),
+            ),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.camera_alt,
+                  color: Colors.blue[600],
+                  size: 24,
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Remédios Identificados',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue[800],
+                        ),
+                      ),
+                      Text(
+                        '${remediosOCR.length} medicamento(s) adicionado(s) via câmera',
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.blue[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+
+        // Lista de remédios
+        ...List.generate(totalRemedios, (index) {
+          final isOCRItem = index < remediosOCR.length;
+          final remedioOCR = isOCRItem ? remediosOCR[index] : null;
+          final nomeRemedio = isOCRItem
+              ? remedioOCR!['nome']
+              : 'Remédio ${index - remediosOCR.length + 1}';
+
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetailsScreen(
+                      indiceRemedio: index,
+                      nomeRemedio: nomeRemedio,
+                      textoCompletoBula: "",
+                    ),
+                  ),
+                );
+              },
+              borderRadius: BorderRadius.circular(8),
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 13.0),
+                decoration: BoxDecoration(
+                  color: isOCRItem ? Colors.blue[200] : Colors.teal[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 120,
+                      height: 120,
+                      margin: const EdgeInsets.all(13.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Stack(
+                        children: [
+                          Center(
+                            child: Icon(
+                              isOCRItem ? Icons.camera_alt : Icons.image,
+                              color: Colors.grey[400],
+                              size: 60,
+                            ),
+                          ),
+                          if (isOCRItem)
+                            Positioned(
+                              top: 4,
+                              right: 4,
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: const BoxDecoration(
+                                  color: Colors.blue,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.check,
+                                  color: Colors.white,
+                                  size: 12,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(width: 5),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            nomeRemedio,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 26,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          if (isOCRItem) ...[
+                            const SizedBox(height: 4),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 2,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Text(
+                                'Identificado via OCR',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }),
+
+        // Botão para adicionar novo remédio
+        Container(
+          margin: const EdgeInsets.only(top: 20),
+          child: ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const OCRScreen()),
+              );
+            },
+            icon: const Icon(Icons.add_a_photo),
+            label: const Text('Identificar Novo Remédio'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.teal,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.camera_alt_outlined,
+            size: 120,
+            color: Colors.grey[400],
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'Nenhum remédio identificado',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            'Use a câmera para identificar e adicionar medicamentos à sua lista',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[500],
+            ),
+          ),
+          const SizedBox(height: 30),
+          ElevatedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const OCRScreen()),
+              );
+            },
+            icon: const Icon(Icons.add_a_photo),
+            label: const Text('Identificar Remédio'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.teal,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -261,17 +468,20 @@ class AboutScreen extends StatelessWidget {
                   FeatureItem(
                     icon: Icons.text_fields,
                     title: 'Identificar Letra',
-                    description: 'Reconhecimento preciso de texto em materiais impressos.',
+                    description:
+                    'Reconhecimento preciso de texto em materiais impressos.',
                   ),
                   FeatureItem(
                     icon: Icons.record_voice_over,
                     title: 'Ler em Voz Alta',
-                    description: 'Conversão de texto para áudio com vozes naturais.',
+                    description:
+                    'Conversão de texto para áudio com vozes naturais.',
                   ),
                   FeatureItem(
                     icon: Icons.format_size,
                     title: 'Aumentar Tamanho da Letra',
-                    description: 'Ajuste do tamanho do texto para melhor visualização.',
+                    description:
+                    'Ajuste do tamanho do texto para melhor visualização.',
                   ),
                   FeatureItem(
                     icon: Icons.speed,
@@ -281,7 +491,8 @@ class AboutScreen extends StatelessWidget {
                   FeatureItem(
                     icon: Icons.mic,
                     title: 'Navegação por Comando de Voz',
-                    description: 'Interface acessível controlada por comandos de voz.',
+                    description:
+                    'Interface acessível controlada por comandos de voz.',
                   ),
                   SizedBox(height: 20),
                   Text(
@@ -311,7 +522,6 @@ class AboutScreen extends StatelessWidget {
     );
   }
 }
-
 class FeatureItem extends StatelessWidget {
   final IconData icon;
   final String title;
@@ -370,3 +580,4 @@ class FeatureItem extends StatelessWidget {
     );
   }
 }
+
