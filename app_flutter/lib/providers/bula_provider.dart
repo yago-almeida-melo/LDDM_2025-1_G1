@@ -14,4 +14,17 @@ class BulaProvider {
       return "Não foi possível simplificar a bula no momento.";
     }
   }
+
+  Future<String> buscarInfoRemedio(String textoExtraido) async {
+    try {
+      if (textoExtraido.isEmpty) {
+        return "O texto extraido está vazio.";
+      }
+      final bulaSimplificada = await BulaAISimplifierService.buscarInfoRemedio(textoExtraido);
+      return bulaSimplificada;
+    } catch (e) {
+      print("Ocorreu um erro no BulaProvider: $e");
+      return "Não foi possível simplificar a bula no momento.";
+    }
+  }
 }

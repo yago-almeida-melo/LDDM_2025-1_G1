@@ -416,10 +416,10 @@ class _OCRScreenState extends State<OCRScreen> {
 
     // Informações simuladas baseadas no nome do medicamento
     final informacoesSimuladas =
-        await _bulaProvider.simplificarBula(textoCompleto);
+        await _bulaProvider.buscarInfoRemedio(textoCompleto);
 
     setState(() {
-      _informacoesSimplificadas = informacoesSimuladas;
+      _informacoesSimplificadas = informacoesSimuladas.toString();
     });
   }
 
