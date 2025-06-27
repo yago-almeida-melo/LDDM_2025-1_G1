@@ -1,3 +1,4 @@
+import 'package:app_flutter/database/medicamentoDao.dart';
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,6 +7,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:app_flutter/pages/Home.dart';
 import 'package:app_flutter/pages/Details.dart';
+import 'package:app_flutter/providers/bula_provider.dart';
+import 'package:app_flutter/models/medicamento_model.dart';
 
 class OCRScreen extends StatefulWidget {
   const OCRScreen({super.key});
@@ -89,7 +92,9 @@ class _OCRScreenState extends State<OCRScreen> {
               children: [
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: _processando ? null : () => _capturarImagem(ImageSource.camera),
+                    onPressed: _processando
+                        ? null
+                        : () => _capturarImagem(ImageSource.camera),
                     icon: const Icon(Icons.camera_alt),
                     label: const Text('Câmera'),
                     style: ElevatedButton.styleFrom(
@@ -102,7 +107,9 @@ class _OCRScreenState extends State<OCRScreen> {
                 const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: _processando ? null : () => _capturarImagem(ImageSource.gallery),
+                    onPressed: _processando
+                        ? null
+                        : () => _capturarImagem(ImageSource.gallery),
                     icon: const Icon(Icons.photo_library),
                     label: const Text('Galeria'),
                     style: ElevatedButton.styleFrom(
@@ -329,7 +336,8 @@ class _OCRScreenState extends State<OCRScreen> {
       // 1. Extrair texto da imagem usando OCR
       final inputImage = InputImage.fromFile(imagem);
       final textRecognizer = GoogleMlKit.vision.textRecognizer();
-      final RecognizedText recognizedText = await textRecognizer.processImage(inputImage);
+      final RecognizedText recognizedText =
+          await textRecognizer.processImage(inputImage);
 
       setState(() {
         _textoExtraido = recognizedText.text;
@@ -350,7 +358,8 @@ class _OCRScreenState extends State<OCRScreen> {
           _medicamentoDetectado = true;
         });
       } else {
-        _mostrarErro('Não foi possível identificar o nome do medicamento. Tente uma imagem mais clara.');
+        _mostrarErro(
+            'Não foi possível identificar o nome do medicamento. Tente uma imagem mais clara.');
       }
 
       await textRecognizer.close();
@@ -396,91 +405,50 @@ class _OCRScreenState extends State<OCRScreen> {
     return null;
   }
 
-  Future<void> _simplificarInformacoes(String textoCompleto, String nomeMedicamento) async {
+  Future<void> _simplificarInformacoes(
+      String textoCompleto, String nomeMedicamento) async {
     // Simulação de processamento com IA
     // Em um app real, você faria uma chamada para uma API de IA como OpenAI, Google AI, etc.
+    final BulaProvider _bulaProvider = BulaProvider();
 
-    await Future.delayed(const Duration(seconds: 2)); // Simular tempo de processamento
+    await Future.delayed(
+        const Duration(seconds: 2)); // Simular tempo de processamento
 
     // Informações simuladas baseadas no nome do medicamento
-    final informacoesSimuladas = _gerarInformacoesSimuladas(nomeMedicamento);
+    final informacoesSimuladas =
+        await _bulaProvider.buscarInfoRemedio(textoCompleto);
 
     setState(() {
-      _informacoesSimplificadas = informacoesSimuladas;
+      _informacoesSimplificadas = informacoesSimuladas.toString();
     });
   }
 
-  String _gerarInformacoesSimuladas(String nomeMedicamento) {
-    // Simulação simples de informações baseadas no nome
-    // Em um app real, isso seria processado por IA
+  // String _gerarInformacoesSimuladas(String nomeMedicamento) {
+  //   // Simulação simples de informações baseadas no nome
+  //   // Em um app real, isso seria processado por IA
 
-    final informacoes = [
-      "Para que serve: Tratamento de dor e inflamação.",
-      "Como usar: Tomar 1 comprimido a cada 8 horas, preferencialmente com alimentos.",
-      "Cuidados: Não exceder a dose recomendada. Consulte um médico se os sintomas persistirem.",
-      "Contraindicações: Não usar em caso de alergia aos componentes da fórmula.",
-      "Efeitos colaterais: Podem ocorrer náuseas, tontura ou sonolência em alguns casos."
-    ];
+  //   final informacoes = [
+  //     "Para que serve: Tratamento de dor e inflamação.",
+  //     "Como usar: Tomar 1 comprimido a cada 8 horas, preferencialmente com alimentos.",
+  //     "Cuidados: Não exceder a dose recomendada. Consulte um médico se os sintomas persistirem.",
+  //     "Contraindicações: Não usar em caso de alergia aos componentes da fórmula.",
+  //     "Efeitos colaterais: Podem ocorrer náuseas, tontura ou sonolência em alguns casos."
+  //   ];
 
-    return informacoes.join('\n\n');
-  }
+  //   return informacoes.join('\n\n');
+  // }
 
-  // Simulação de chamada para API de IA (exemplo com OpenAI)
-  Future<String> _chamarAPIIA(String texto, String medicamento) async {
-    try {
-      // Exemplo de como seria uma chamada real para OpenAI API
-      const apiKey = 'SUA_API_KEY_AQUI';
-      const url = 'https://api.openai.com/v1/chat/completions';
-
-      final response = await http.post(
-        Uri.parse(url),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $apiKey',
-        },
-        body: jsonEncode({
-          'model': 'gpt-3.5-turbo',
-          'messages': [
-            {
-              'role': 'system',
-              'content': 'Você é um assistente especializado em medicamentos. Simplifique as informações da bula de medicamentos de forma clara e acessível.'
-            },
-            {
-              'role': 'user',
-              'content': 'Simplifique as informações deste medicamento chamado $medicamento baseado no seguinte texto da bula: $texto'
-            }
-          ],
-          'max_tokens': 500,
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        final data = jsonDecode(response.body);
-        return data['choices'][0]['message']['content'];
-      } else {
-        throw 'Erro na API: ${response.statusCode}';
-      }
-    } catch (e) {
-      // Em caso de erro, retornar informações simuladas
-      return _gerarInformacoesSimuladas(medicamento);
-    }
-  }
-
-  void _adicionarALista() {
-    final novoRemedio = {
-      'nome': _nomeMedicamento,
-      'informacoes': _informacoesSimplificadas,
-      'textoCompleto': _textoExtraido,
-      'dataAdicao': DateTime.now().toString(),
-    };
-
-    setState(() {
-      listaRemedios.add(novoRemedio);
-    });
+Future<void> _adicionarALista() async {
+  try {
+    await MedicamentoDAO.insertMedicamento(
+      _nomeMedicamento,
+      _informacoesSimplificadas,
+      _textoExtraido,
+    );
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('$_nomeMedicamento adicionado à lista!'),
+        content: Text('$_nomeMedicamento adicionado com sucesso ao histórico!'),
         backgroundColor: Colors.green,
         action: SnackBarAction(
           label: 'Ver Lista',
@@ -494,7 +462,16 @@ class _OCRScreenState extends State<OCRScreen> {
         ),
       ),
     );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Erro ao salvar no banco: $e'),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
+}
+
 
   void _verDetalhes() {
     Navigator.push(

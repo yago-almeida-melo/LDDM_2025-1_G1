@@ -1,3 +1,4 @@
+import 'package:app_flutter/database/medicamentoDao.dart';
 import 'package:curved_nav_bar/curved_bar/curved_action_bar.dart';
 import 'package:curved_nav_bar/fab_bar/fab_bottom_app_bar_item.dart';
 import 'package:curved_nav_bar/flutter_curved_bottom_nav_bar.dart';
@@ -141,200 +142,208 @@ class _HomeScreenState extends State<Home> {
   }
 
   Widget _buildHomeContent() {
-    // Combinar remédios padrão com os identificados via OCR
-    final remediosOCR = OCRScreen.listaRemedios;
-    final totalRemedios = 7 + remediosOCR.length; // 7 remédios padrão + OCR
+  return FutureBuilder<List<Map<String, dynamic>>>(
+    future: MedicamentoDAO.getAllMedicamentos(),
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const Center(child: CircularProgressIndicator());
+      }
 
-    if (totalRemedios == 0) {
-      return _buildEmptyState();
-    }
+      if (snapshot.hasError) {
+        return Center(child: Text('Erro ao carregar medicamentos.'));
+      }
 
-    return ListView(
-      padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 150.0),
-      children: [
-        // Header da lista
-        if (remediosOCR.isNotEmpty) ...[
-          Container(
-            padding: const EdgeInsets.all(16),
-            margin: const EdgeInsets.only(bottom: 20),
-            decoration: BoxDecoration(
-              color: Colors.blue[50],
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.blue[200]!),
+      final remediosOCR = snapshot.data ?? [];
+      final totalRemedios = 7 + remediosOCR.length;
+
+      if (totalRemedios == 0) {
+        return _buildEmptyState();
+      }
+
+      return ListView(
+        padding: const EdgeInsets.fromLTRB(15.0, 15.0, 15.0, 150.0),
+        children: [
+          // Header da lista
+          if (remediosOCR.isNotEmpty) ...[
+            Container(
+              padding: const EdgeInsets.all(16),
+              margin: const EdgeInsets.only(bottom: 20),
+              decoration: BoxDecoration(
+                color: Colors.blue[50],
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: Colors.blue[200]!),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.camera_alt, color: Colors.blue[600], size: 24),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Remédios Identificados',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue[800],
+                            )),
+                        Text(
+                          '${remediosOCR.length} medicamento(s) adicionado(s) via câmera',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.blue[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-            child: Row(
-              children: [
-                Icon(
-                  Icons.camera_alt,
-                  color: Colors.blue[600],
-                  size: 24,
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          ],
+
+          // Lista de remédios
+          ...List.generate(totalRemedios, (index) {
+            final isOCRItem = index < remediosOCR.length;
+            final remedioOCR = isOCRItem ? remediosOCR[index] : null;
+            final nomeRemedio = isOCRItem
+                ? remedioOCR!['nome']
+                : 'Remédio ${index - remediosOCR.length + 1}';
+
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailsScreen(
+                        indiceRemedio: index,
+                        nomeRemedio: nomeRemedio,
+                        textoCompletoBula:
+                            isOCRItem ? remedioOCR!['textoCompleto'] ?? '' : '',
+                      ),
+                    ),
+                  );
+                },
+                borderRadius: BorderRadius.circular(8),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(vertical: 13.0),
+                  decoration: BoxDecoration(
+                    color: isOCRItem ? Colors.blue[200] : Colors.teal[200],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
                     children: [
-                      Text(
-                        'Remédios Identificados',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue[800],
+                      Container(
+                        width: 120,
+                        height: 120,
+                        margin: const EdgeInsets.all(13.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Icon(
+                                isOCRItem ? Icons.camera_alt : Icons.image,
+                                color: Colors.grey[400],
+                                size: 60,
+                              ),
+                            ),
+                            if (isOCRItem)
+                              Positioned(
+                                top: 4,
+                                right: 4,
+                                child: Container(
+                                  padding: const EdgeInsets.all(4),
+                                  decoration: const BoxDecoration(
+                                    color: Colors.blue,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: const Icon(
+                                    Icons.check,
+                                    color: Colors.white,
+                                    size: 12,
+                                  ),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
-                      Text(
-                        '${remediosOCR.length} medicamento(s) adicionado(s) via câmera',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.blue[600],
+                      const SizedBox(width: 5),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              nomeRemedio,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 26,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            if (isOCRItem) ...[
+                              const SizedBox(height: 4),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Text(
+                                  'Identificado via OCR',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
-              ],
+              ),
+            );
+          }),
+
+          // Botão para adicionar novo remédio
+          Container(
+            margin: const EdgeInsets.only(top: 20),
+            child: ElevatedButton.icon(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const OCRScreen()),
+                );
+              },
+              icon: const Icon(Icons.add_a_photo),
+              label: const Text('Identificar Novo Remédio'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.teal,
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
             ),
           ),
         ],
+      );
+    },
+  );
+}
 
-        // Lista de remédios
-        ...List.generate(totalRemedios, (index) {
-          final isOCRItem = index < remediosOCR.length;
-          final remedioOCR = isOCRItem ? remediosOCR[index] : null;
-          final nomeRemedio = isOCRItem
-              ? remedioOCR!['nome']
-              : 'Remédio ${index - remediosOCR.length + 1}';
-
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 20.0),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => DetailsScreen(
-                      indiceRemedio: index,
-                      nomeRemedio: nomeRemedio,
-                      textoCompletoBula: "",
-                    ),
-                  ),
-                );
-              },
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                padding: const EdgeInsets.symmetric(vertical: 13.0),
-                decoration: BoxDecoration(
-                  color: isOCRItem ? Colors.blue[200] : Colors.teal[200],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 120,
-                      height: 120,
-                      margin: const EdgeInsets.all(13.0),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                      child: Stack(
-                        children: [
-                          Center(
-                            child: Icon(
-                              isOCRItem ? Icons.camera_alt : Icons.image,
-                              color: Colors.grey[400],
-                              size: 60,
-                            ),
-                          ),
-                          if (isOCRItem)
-                            Positioned(
-                              top: 4,
-                              right: 4,
-                              child: Container(
-                                padding: const EdgeInsets.all(4),
-                                decoration: const BoxDecoration(
-                                  color: Colors.blue,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.check,
-                                  color: Colors.white,
-                                  size: 12,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            nomeRemedio,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 26,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          if (isOCRItem) ...[
-                            const SizedBox(height: 4),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 8,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.3),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Text(
-                                'Identificado via OCR',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        }),
-
-        // Botão para adicionar novo remédio
-        Container(
-          margin: const EdgeInsets.only(top: 20),
-          child: ElevatedButton.icon(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const OCRScreen()),
-              );
-            },
-            icon: const Icon(Icons.add_a_photo),
-            label: const Text('Identificar Novo Remédio'),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.teal,
-              foregroundColor: Colors.white,
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
 
   Widget _buildEmptyState() {
     return Center(

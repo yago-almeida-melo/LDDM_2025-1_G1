@@ -1,22 +1,22 @@
 /// Representa um único resultado da pesquisa de medicamentos.
 class Medicamento {
-  final String nomeProduto;
-  final String empresa;
-  final String numProcesso;
+  final String nome;
+  final String informacoes;
+  final String textoCompleto;
+  final DateTime? dataAdicao;
+
+  // 'nome': _nomeMedicamento,
+  //     'informacoes': _informacoesSimplificadas,
+  //     'textoCompleto': _textoExtraido,
+  //     'dataAdicao':
 
   Medicamento({
-    required this.nomeProduto,
-    required this.empresa,
-    required this.numProcesso,
+    required this.nome,
+    required this.informacoes,
+    required this.textoCompleto,
+    this.dataAdicao
   });
 
-  factory Medicamento.fromJson(Map<String, dynamic> json) {
-    return Medicamento(
-      nomeProduto: json['nomeProduto'] ?? 'Nome não disponível',
-      empresa: json['empresa'] ?? 'Empresa não disponível',
-      numProcesso: json['numProcesso'] ?? '',
-    );
-  }
 }
 
 class MedicamentoDetalhado {
